@@ -84,7 +84,7 @@ void help(char *prog_name)
 #if defined(_WIN32) || defined(_WIN64)
 #define SERIAL_BAUD 115200
 #else
-#define SERIAL_BAUD B115200
+#define SERIAL_BAUD 115200
 #endif
 
 int trace_on = 0;

@@ -131,6 +131,7 @@ serialib serial;
 int isp_serial_open(int baudrate, char *serial_device)
 {
 	// struct termios tio;
+	char ser_dev[100] = {0};
 
 	if (serial_device == NULL)
 	{
@@ -138,7 +139,16 @@ int isp_serial_open(int baudrate, char *serial_device)
 		return -2;
 	}
 
-	char errorOpening = serial.openDevice("\\\\.\\COM14", 115200);
+#if defined(_WIN32) || defined(_WIN64)
+	memcpy(&ser_dev[0], "\\\\.\\", 5);
+	memcpy(&ser_dev[6], serial_device, strlen(serial_device));
+
+#else
+	memcpy(&ser_dev[0], serial_device, strlen(serial_device));
+#endif
+
+	printf("%s\n", ser_dev);
+	char errorOpening = serial.openDevice(ser_dev, 115200);
 
 	// If connection fails, return the error code otherwise, display a success message
 	if (errorOpening != 1)
@@ -222,8 +232,10 @@ void isp_serial_empty_buffer()
 
 	do
 	{
-		// nb = read(serial_fd, &unused, 1);
+		// serial.flushReceiver
+		//  nb = read(serial_fd, &unused, 1);
 		nb = serial.readBytes(&unused, 1, 500, 5000);
+		printf("%c\n", unused);
 		if (nb < 0)
 		{
 			break;
@@ -239,7 +251,7 @@ void isp_serial_empty_buffer()
 			// perror("Serial read error");
 			// return;
 		}
-		else if (nb == 0)
+		if (nb == 0)
 		{
 			printf("eb: serial_read: end of file !!!!\n");
 			return;
@@ -251,6 +263,7 @@ void isp_serial_empty_buffer()
 	{
 		// nb = read(serial_fd, &unused, 1);
 		nb = serial.readBytes(&unused, 1, 500, 5000);
+		// return;
 	}
 	if (unused == '\n')
 	{

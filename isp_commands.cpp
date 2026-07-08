@@ -163,6 +163,9 @@ int isp_connect(unsigned int crystal_freq, int quiet)
 	isp_serial_empty_buffer();
 	/* Read reply (OK) */
 	isp_serial_read(buf, REP_BUFSIZE, strlen(SYNCHRO_OK));
+
+	printf("%s\n", buf);
+
 	if (strncmp(SYNCHRO_OK, buf, strlen(SYNCHRO_OK)) != 0)
 	{
 		printf("Unable to synchronize, crystal frequency not acknowledged.\n");
