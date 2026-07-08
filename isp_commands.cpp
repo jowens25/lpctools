@@ -35,6 +35,10 @@
 
 #include "isp_utils.h"
 
+#if defined(_WIN32) || defined(_WIN64)
+#include "windows.h"
+#endif
+
 extern int trace_on;
 
 /* Max should be 1270 for read memory, a little bit more for writes */

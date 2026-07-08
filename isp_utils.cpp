@@ -503,7 +503,9 @@ int isp_file_to_buff(char *data, unsigned int len, char *filename)
 	}
 	else
 	{
-		in_fd = open(filename, O_RDONLY | O_NONBLOCK);
+		// in_fd = open(filename, O_RDONLY | O_NONBLOCK);
+
+		in_fd = open(filename, O_RDONLY);
 		if (in_fd <= 0)
 		{
 			perror("Unable to open file for reading");

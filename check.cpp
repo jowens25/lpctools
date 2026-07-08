@@ -35,7 +35,12 @@
 #include <errno.h>
 #include <getopt.h>
 
+#if defined(_WIN32) || defined(_WIN64)
+#include "windows.h"
+#else
+
 #include <termios.h> /* for serial config */
+#endif
 #include <ctype.h>
 
 #include <string.h> /* strncmp, strlen, strdup */

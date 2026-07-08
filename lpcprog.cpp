@@ -35,7 +35,12 @@
 #include <errno.h>
 #include <getopt.h>
 
+#if defined(_WIN32) || defined(_WIN64)
+#include "windows.h"
+#else
 #include <termios.h> /* for serial config */
+
+#endif
 #include <ctype.h>
 
 #include <string.h> /* strncmp, strlen, strdup */
@@ -76,7 +81,11 @@ void help(char *prog_name)
 	fprintf(stderr, "-----------------------------------------------------------------------\n");
 }
 
+#if defined(_WIN32) || defined(_WIN64)
+#define SERIAL_BAUD 115200
+#else
 #define SERIAL_BAUD B115200
+#endif
 
 int trace_on = 0;
 int quiet = 0;

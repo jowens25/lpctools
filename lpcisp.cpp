@@ -33,8 +33,9 @@
 
 #include <errno.h>
 #include <getopt.h>
-
+#if defined(__linux__)
 #include <termios.h> /* for serial config */
+#endif
 #include <ctype.h>
 
 #include <string.h> /* strncmp, strlen */
@@ -97,7 +98,11 @@ void help(char *prog_name)
 	fprintf(stderr, "-----------------------------------------------------------------------\n");
 }
 
+#if defined(__linux__)
 #define SERIAL_BAUD B115200
+#else
+#define SERIAL_BAUD 115200
+#endif
 
 int trace_on = 0;
 

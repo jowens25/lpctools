@@ -37,6 +37,10 @@
 #include "isp_commands.h"
 #include "parts.h"
 
+#if defined(_WIN32) || defined(_WIN64)
+#include "windows.h"
+#endif
+
 #define REP_BUFSIZE 40
 
 extern int trace_on;
