@@ -54,3 +54,7 @@ clean:
 mrproper: clean
 	rm -f lpcisp
 	rm -f lpcprog
+	rm -f lpc_binary_check
+	rm -f lpcisp.exe
+	rm -f lpcprog.exe
+	rm -f lpc_binary_check.exe
