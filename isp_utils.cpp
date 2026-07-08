@@ -138,7 +138,7 @@ int isp_serial_open(int baudrate, char *serial_device)
 		return -2;
 	}
 
-	char errorOpening = serial.openDevice(serial_device, 115200);
+	char errorOpening = serial.openDevice("\\\\.\\COM14", 115200);
 
 	// If connection fails, return the error code otherwise, display a success message
 	if (errorOpening != 1)
