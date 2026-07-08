@@ -25,16 +25,14 @@
 
 #include "parts.h"
 
-int dump_to_file(struct part_desc* part, char* filename);
+int dump_to_file(struct part_desc *part, char *filename);
 
-int erase_flash(struct part_desc* part);
+int erase_flash(struct part_desc *part);
 
-int flash_target(struct part_desc* part, char* filename, int check_user_code);
-
+int flash_target(struct part_desc *part, char *filename, int check_user_code);
+int non_uniform_flash_target(struct part_desc *part, char *filename, int check_user_code);
 int get_ids(void);
 
-int start_prog(struct part_desc* part);
-
+int start_prog(struct part_desc *part);
 
 #endif /* ISP_CMDS_FLASH_H */
-
