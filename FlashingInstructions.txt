@@ -1,0 +1,15 @@
+1. check the id of the part:
+
+.\lpcprog.exe -c COM# -c id
+
+2. erase the part:
+
+.\lpcprog.exe -d COM# -c blank
+
+3. flash the part:
+
+.\lpcprog.exe -d COM# -c 4078flash ND2310D-R_LPC4078_501_ver3-4.bin
+
+4. wait
+
+5. power cycle
