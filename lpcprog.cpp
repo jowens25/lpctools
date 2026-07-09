@@ -61,12 +61,13 @@ void help(char *prog_name)
 					"  Default baudrate is B115200\n"
 					"  Default oscilator frequency used is 10000 KHz\n"
 					"  <command> is one of:\n"
-					"  \t dump, flash, id, blank, go\n"
+					"  \t dump, flash, id, blank, go, flash4078\n"
 					"  \t dump file_name: dump flash content to 'file'\n"
-					"  \t flash file_name : put 'file' to flash, erasing requiered sectors\n"
+					"  \t flash file_name : put 'file' to flash, erasing required sectors\n"
 					"  \t blank : erase whole flash\n"
 					"  \t id : get all id information\n"
 					"  \t go : execute program from reset handler in thumb mode and open terminal\n"
+					"  \t flash4078 file_name : put 'file' to flash, erasing required sectors, respecting non-uniform sectors\n"
 					"  Available options:\n"
 					"  \t -p | --parts=file : Parts description file (see defaults)\n"
 					"  \t -c | --command=cmd : \n"
@@ -92,8 +93,8 @@ int quiet = 0;
 static int calc_user_code = 1; /* User code is computed by default */
 
 char *parts_file_name = NULL;
-#define DEFAULT_PART_FILE_NAME_ETC "/etc/lpctools_parts.def"
-#define DEFAULT_PART_FILE_NAME_CURRENT "./lpctools_parts.def"
+#define DEFAULT_PART_FILE_NAME_ETC (char *)"/etc/lpctools_parts.def"
+#define DEFAULT_PART_FILE_NAME_CURRENT (char *)"./lpctools_parts.def"
 
 static int prog_connect_and_id(int freq);
 static int prog_handle_command(char *cmd, int dev_id, int arg_count, char **args);
@@ -292,12 +293,13 @@ struct prog_command
 };
 
 static struct prog_command prog_cmds_list[] = {
-	{0, "dump"},
-	{1, "flash"},
-	{2, "id"},
-	{3, "blank"},
-	{4, "go"},
-	{5, NULL}};
+	{0, (char *)"dump"},
+	{1, (char *)"flash"},
+	{2, (char *)"id"},
+	{3, (char *)"blank"},
+	{4, (char *)"go"},
+	{5, (char *)"flash4078"},
+	{6, NULL}};
 
 /*
  * Try to connect to the target and identify the device.
@@ -385,6 +387,10 @@ static int prog_handle_command(char *cmd, int dev_id, int arg_count, char **args
 
 	case 4: /* go : no args */
 		ret = start_prog(part);
+		break;
+
+	case 5: /* flash4078, need one arg: filename */
+		ret = non_uniform_flash_target(part, args[0], calc_user_code);
 		break;
 	}
 

@@ -148,7 +148,7 @@ int isp_serial_open(int baudrate, char *serial_device)
 #endif
 
 	printf("%s\n", ser_dev);
-	char errorOpening = serial.openDevice(ser_dev, 115200);
+	char errorOpening = serial.openDevice(ser_dev, baudrate);
 
 	// If connection fails, return the error code otherwise, display a success message
 	if (errorOpening != 1)
@@ -228,7 +228,7 @@ void isp_serial_empty_buffer()
 {
 	int nb = 0;
 	char unused = 0;
-	unsigned int loops = 0; /* Used to create a timeout */
+	// unsigned int loops = 0; /* Used to create a timeout */
 
 	do
 	{
@@ -279,7 +279,7 @@ int isp_serial_read(char *buf, unsigned int buf_size, unsigned int min_read)
 {
 	int nb = 0;
 	unsigned int count = 0;
-	unsigned int loops = 0; /* Used to create a timeout */
+	// unsigned int loops = 0; /* Used to create a timeout */
 
 	if (min_read > buf_size)
 	{
