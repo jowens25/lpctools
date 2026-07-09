@@ -35,7 +35,7 @@
 #include <errno.h>
 #include <getopt.h>
 
-#include <termios.h> /* for serial config */
+// #include <termios.h> /* for serial config */
 #include <ctype.h>
 
 #include <string.h> /* strncmp, strlen, strdup */

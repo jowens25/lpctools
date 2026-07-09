@@ -37,6 +37,10 @@
 #include "isp_commands.h"
 #include "parts.h"
 
+#if defined(_WIN32) || defined(_WIN64)
+#include "windows.h"
+#endif
+
 #define REP_BUFSIZE 40
 
 extern int trace_on;
@@ -94,12 +98,12 @@ int erase_flash(struct part_desc *part)
 		return -1;
 	}
 
-	if (part->part_id == 0x47193f47)
-	{
-		printf("erasing 4078's 30 sectors.\n");
-		temp_part_flash_nb_sectors = part->flash_nb_sectors;
-		part->flash_nb_sectors = 30;
-	}
+	// if (part->part_id == 0x47193f47)
+	//{
+	//	printf("erasing 4078's 30 sectors.\n");
+	//	temp_part_flash_nb_sectors = part->flash_nb_sectors;
+	//	part->flash_nb_sectors = 30;
+	// }
 
 	for (i = 0; i < (int)(part->flash_nb_sectors); i++)
 	{
@@ -120,7 +124,14 @@ int erase_flash(struct part_desc *part)
 		{
 			/* Controller replyed with first non blank offset and data, remove it from buffer */
 			char buf[REP_BUFSIZE];
-			usleep(5000); /* Some devices are slow to scan flash, give them some time */
+			// usleep(5000); /* Some devices are slow to scan flash, give them some time */
+
+#if defined(_WIN32) || defined(_WIN64)
+			Sleep(5);
+#else
+			usleep(5000);
+#endif
+
 			isp_serial_read(buf, REP_BUFSIZE, 3);
 		}
 		/* Sector not blank, perform erase */
@@ -139,11 +150,11 @@ int erase_flash(struct part_desc *part)
 	}
 	printf("Flash now all blank.\n");
 
-	if (part->part_id == 0x47193f47)
-	{
-		printf("restoring 4078's sectors.\n");
-		part->flash_nb_sectors = temp_part_flash_nb_sectors;
-	}
+	// if (part->part_id == 0x47193f47)
+	//{
+	//	printf("restoring 4078's sectors.\n");
+	//	part->flash_nb_sectors = temp_part_flash_nb_sectors;
+	// }
 
 	return 0;
 }
@@ -355,6 +366,11 @@ int flash_target(struct part_desc *part, char *filename, int calc_user_code)
 	return ret;
 }
 
+// # LPC40XX Familly initial section ...
+// # 0x47193f47, LPC4078FBD80,       0x00000000, 0x10000, 16,    0x04,    0x10000000, 0x18000, 0x800, 0x400,  1
+// # LPC40XX Familly final section ...
+// # 0x47193f47, LPC4078FBD80,       0x00010000, 0x70000, 14,    0x04,    0x10000000, 0x18000, 0x800, 0x400,  1
+
 int non_uniform_flash_target(struct part_desc *part, char *filename, int calc_user_code)
 {
 	printf("Starting non-uniform write ...\n");
@@ -459,7 +475,7 @@ int non_uniform_flash_target(struct part_desc *part, char *filename, int calc_us
 	{
 		unsigned int current_sector = (i * write_size) / sector_size;
 
-		printf("current sector: %d\n", current_sector);
+		// printf("current sector: %d\n", current_sector);
 
 		uint32_t flash_addr = 0x00000000 + (i * write_size);
 		/* Prepare sector for writting (must be done before each write) */
@@ -527,7 +543,7 @@ int non_uniform_flash_target(struct part_desc *part, char *filename, int calc_us
 	{
 		unsigned int current_sector = (i * write_size) / sector_size + 16;
 
-		printf("current sector: %d\n", current_sector);
+		// printf("current sector: %d\n", current_sector);
 
 		uint32_t flash_addr = 0x00010000 + (i * write_size);
 		/* Prepare sector for writting (must be done before each write) */

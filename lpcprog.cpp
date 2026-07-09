@@ -35,7 +35,7 @@
 #include <errno.h>
 #include <getopt.h>
 
-#include <termios.h> /* for serial config */
+// #include <termios.h> /* for serial config */
 #include <ctype.h>
 
 #include <string.h> /* strncmp, strlen, strdup */
@@ -77,7 +77,7 @@ void help(char *prog_name)
 	fprintf(stderr, "-----------------------------------------------------------------------\n");
 }
 
-#define SERIAL_BAUD B115200
+#define SERIAL_BAUD 115200
 
 int trace_on = 0;
 int quiet = 0;

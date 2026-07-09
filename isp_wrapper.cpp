@@ -36,6 +36,10 @@
 #include "isp_commands.h"
 #include "isp_utils.h"
 
+#if defined(_WIN32) || defined(_WIN64)
+#include "windows.h"
+#endif
+
 extern int trace_on;
 
 #define RAM_MAX_SIZE (8 * 1024) /* 8 KB */
@@ -235,7 +239,11 @@ int isp_cmd_compare(int arg_count, char **args)
 		break;
 	case COMPARE_ERROR:
 		/* read remaining data */
+#if defined(_WIN32) || defined(_WIN64)
+		Sleep(2);
+#else
 		usleep(2000);
+#endif
 		len = isp_serial_read(buf, REP_BUFSIZE, 3);
 		if (len <= 0)
 		{
@@ -356,7 +364,11 @@ int isp_cmd_blank_check(int arg_count, char **args)
 		break;
 	case SECTOR_NOT_BLANK:
 		/* read remaining data */
+#if defined(_WIN32) || defined(_WIN64)
+		Sleep(2);
+#else
 		usleep(2000);
+#endif
 		len = isp_serial_read(buf, REP_BUFSIZE, 3);
 		if (len <= 0)
 		{

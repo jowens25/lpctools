@@ -36,6 +36,8 @@
  */
 struct part_desc *find_part_in_file(uint64_t dev_id, char *parts_file_name)
 {
+
+	// printf("device id: 0x%08x\n", dev_id);
 	FILE *parts_file = NULL;
 	unsigned int i = 0;
 	unsigned int line = 0; /* Store current line number when reading file */
@@ -54,7 +56,6 @@ struct part_desc *find_part_in_file(uint64_t dev_id, char *parts_file_name)
 		char *endp = NULL;
 		uint32_t *part_values = NULL;
 		unsigned int nval = 0;
-
 		if (fgets(buf, CONF_READ_BUF_SIZE, parts_file) == NULL)
 		{
 			printf("Part not found before end of parts description file.\n");
