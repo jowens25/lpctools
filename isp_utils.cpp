@@ -274,7 +274,7 @@ int isp_serial_read(char *buf, unsigned int buf_size, unsigned int min_read)
 
 	do
 	{
-		nb = serial.readBytes(&buf[count], (buf_size - count), 250, 500);
+		nb = serial.readBytes(&buf[count], (buf_size - count), 500, 5000);
 
 		if (nb < 0)
 		{
