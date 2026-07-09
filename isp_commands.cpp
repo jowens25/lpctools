@@ -43,7 +43,7 @@ extern int trace_on;
 
 /* Max should be 1270 for read memory, a little bit more for writes */
 #define SERIAL_BUFSIZE 1300
-#define REP_BUFSIZE 20
+#define REP_BUFSIZE 100
 
 #define SYNCHRO_START "?"
 #define SYNCHRO "Synchronized\r\n"

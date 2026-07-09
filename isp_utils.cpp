@@ -451,7 +451,11 @@ int isp_buff_to_file(char *data, unsigned int len, char *filename)
 	}
 	else
 	{
+#if defined(_WIN32) || defined(_WIN64)
+		out_fd = open(filename, (O_WRONLY | O_CREAT | O_TRUNC | O_BINARY), FILE_CREATE_MODE);
+#else
 		out_fd = open(filename, (O_WRONLY | O_CREAT | O_TRUNC), FILE_CREATE_MODE);
+#endif
 		if (out_fd <= 0)
 		{
 			perror("Unable to open or create file for writing");
@@ -492,8 +496,11 @@ int isp_file_to_buff(char *data, unsigned int len, char *filename)
 	}
 	else
 	{
+#if defined(_WIN32) || defined(_WIN64)
+		in_fd = open(filename, O_RDONLY | O_BINARY);
+#else
 		in_fd = open(filename, O_RDONLY);
-		// in_fd = open(filename, O_RDONLY | O_NONBLOCK);
+#endif
 
 		if (in_fd <= 0)
 		{
