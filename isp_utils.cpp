@@ -131,7 +131,6 @@ serialib serial;
 int isp_serial_open(int baudrate, char *serial_device)
 {
 	// struct termios tio;
-	char ser_dev[100] = {0};
 
 	if (serial_device == NULL)
 	{
@@ -139,16 +138,7 @@ int isp_serial_open(int baudrate, char *serial_device)
 		return -2;
 	}
 
-#if defined(_WIN32) || defined(_WIN64)
-	memcpy(&ser_dev[0], "\\\\.\\", 5);
-	memcpy(&ser_dev[6], serial_device, strlen(serial_device));
-
-#else
-	memcpy(&ser_dev[0], serial_device, strlen(serial_device));
-#endif
-
-	printf("%s\n", ser_dev);
-	char errorOpening = serial.openDevice(ser_dev, baudrate);
+	char errorOpening = serial.openDevice(serial_device, 115200);
 
 	// If connection fails, return the error code otherwise, display a success message
 	if (errorOpening != 1)
@@ -228,14 +218,12 @@ void isp_serial_empty_buffer()
 {
 	int nb = 0;
 	char unused = 0;
-	// unsigned int loops = 0; /* Used to create a timeout */
+	unsigned int loops = 0; /* Used to create a timeout */
 
 	do
 	{
-		// serial.flushReceiver
-		//  nb = read(serial_fd, &unused, 1);
+		// nb = read(serial_fd, &unused, 1);
 		nb = serial.readBytes(&unused, 1, 500, 5000);
-		printf("%c\n", unused);
 		if (nb < 0)
 		{
 			break;
@@ -251,7 +239,7 @@ void isp_serial_empty_buffer()
 			// perror("Serial read error");
 			// return;
 		}
-		if (nb == 0)
+		else if (nb == 0)
 		{
 			printf("eb: serial_read: end of file !!!!\n");
 			return;
@@ -263,7 +251,6 @@ void isp_serial_empty_buffer()
 	{
 		// nb = read(serial_fd, &unused, 1);
 		nb = serial.readBytes(&unused, 1, 500, 5000);
-		// return;
 	}
 	if (unused == '\n')
 	{
@@ -279,7 +266,7 @@ int isp_serial_read(char *buf, unsigned int buf_size, unsigned int min_read)
 {
 	int nb = 0;
 	unsigned int count = 0;
-	// unsigned int loops = 0; /* Used to create a timeout */
+	unsigned int loops = 0; /* Used to create a timeout */
 
 	if (min_read > buf_size)
 	{
@@ -516,9 +503,7 @@ int isp_file_to_buff(char *data, unsigned int len, char *filename)
 	}
 	else
 	{
-		// in_fd = open(filename, O_RDONLY | O_NONBLOCK);
-
-		in_fd = open(filename, O_RDONLY);
+		in_fd = open(filename, O_RDONLY | O_NONBLOCK);
 		if (in_fd <= 0)
 		{
 			perror("Unable to open file for reading");
