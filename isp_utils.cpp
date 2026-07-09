@@ -136,7 +136,13 @@ int isp_serial_open(int baudrate, char *serial_device)
 		return -2;
 	}
 
+#if defined(_WIN32) || defined(_WIN64)
+	char temp_serial_device[100] = {0};
+	snprintf(temp_serial_device, sizeof(temp_serial_device), "\\\\.\\%s", serial_device);
+	char errorOpening = serial.openDevice(temp_serial_device, baudrate);
+#else
 	char errorOpening = serial.openDevice(serial_device, baudrate);
+#endif
 
 	// If connection fails, return the error code otherwise, display a success message
 	if (errorOpening != 1)
