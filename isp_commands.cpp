@@ -43,7 +43,7 @@ extern int trace_on;
 
 /* Max should be 1270 for read memory, a little bit more for writes */
 #define SERIAL_BUFSIZE 1300
-#define REP_BUFSIZE 100
+#define REP_BUFSIZE 20
 
 #define SYNCHRO_START "?"
 #define SYNCHRO "Synchronized\r\n"
@@ -636,7 +636,7 @@ int isp_send_buf_to_ram(char *data, unsigned long int addr, unsigned int count, 
 #else
 		usleep(20000);
 #endif
-		len = isp_serial_read(repbuf, REP_BUFSIZE, 4);
+		len = isp_serial_read(repbuf, 4, 4);
 		if (len <= 0)
 		{
 			printf("Error reading write acknowledge.\n");

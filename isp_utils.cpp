@@ -272,6 +272,12 @@ int isp_serial_read(char *buf, unsigned int buf_size, unsigned int min_read)
 		next_read_char = 0;
 	}
 
+	if (min_read < 0)
+	{
+		printf("unable to use min_read < 0\n");
+		return -2;
+	}
+
 	do
 	{
 		nb = serial.readBytes(&buf[count], (buf_size - count), 500, 5000);
@@ -292,6 +298,9 @@ int isp_serial_read(char *buf, unsigned int buf_size, unsigned int min_read)
 			isp_dump((unsigned char *)(&buf[count]), nb);
 		}
 		count += nb;
+
+		// printf("count: %d : min_read: %d\n", count, min_read);
+
 	} while (count < min_read);
 
 	if (trace_on)
