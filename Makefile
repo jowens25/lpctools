@@ -44,7 +44,7 @@ lpc_binary_check: $(LPCCHECK_OBJS)
 	@echo Done.
 
 ${OBJDIR}/%.o: %.cpp
-	@mkdir -p $(dir $@)
+# @mkdir -p $(dir $@)
 	@echo "-- compiling" $<
 	@$(CC) -MMD -MP -MF ${OBJDIR}/$*.d $(CPPFLAGS) $(CFLAGS) $< -c -o $@
 
@@ -57,3 +57,9 @@ clean:
 	rm -f lpcisp.exe
 	rm -f lpcprog.exe
 	rm -f lpc_binary_check.exe
+
+clean-windows:
+	del lpcisp.exe
+	del lpcprog.exe
+	del lpc_binary_check.exe
+	del .\objs\*
