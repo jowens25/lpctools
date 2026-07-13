@@ -2,7 +2,7 @@
 
 CC = $(CROSS_COMPILE)g++
 
-CFLAGS += -Wall -Wextra -O2 -static-libstdc++
+CFLAGS += -Wall -Wextra -O2 -static-libstdc++ -static-libgcc
 
 all: lpcisp lpcprog lpc_binary_check
 
