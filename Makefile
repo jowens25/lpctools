@@ -8,7 +8,7 @@ all: lpcisp lpcprog lpc_binary_check
 
 
 OBJDIR = objs
-SRC = $(shell find . -name \*.cpp)
+SRC = $(ls *.cpp)
 OBJS = ${SRC:%.cpp=${OBJDIR}/%.o}
 
 LPCISP_OBJS = ${OBJDIR}/lpcisp.o \
