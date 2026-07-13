@@ -33,6 +33,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#include "iostream"
+
 #include "isp_utils.h"
 #include "isp_commands.h"
 #include "parts.h"
@@ -147,7 +149,9 @@ int erase_flash(struct part_desc *part)
 			printf("Error (%d) when trying to erase sector %d!\n", ret, i);
 			return ret;
 		}
+		// std::cout << ".";
 	}
+	// printf("\n");
 	printf("Flash now all blank.\n");
 
 	// if (part->part_id == 0x47193f47)
